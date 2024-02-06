@@ -1,0 +1,20 @@
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+
+// Color
+$primary: #0d456e;
+$secondary: #edede9;
+$success: #06d6a0;
+$warning: #f49321;
+$info: #caf0f8;
+$danger: #ef476f;
+
+// Import Bootstrap variables for use within theme
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// Import spacing variables
+@import "./variables/spacing.scss";
+
+// Import navigation variables
+@import "./variables/navigation.scss";
