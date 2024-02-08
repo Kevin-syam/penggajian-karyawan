@@ -33,6 +33,7 @@ class CutiController extends Controller
     {
         Cuti::create([
             'jenis_cuti'   => $request->jenis_cuti,
+            'bobot_cuti'   => $request->bobot_cuti,
         ]);
 
         toastr()->success('Data berhasil ditambahkan.', 'Sukses');
@@ -58,6 +59,7 @@ class CutiController extends Controller
     {
         Cuti::findOrFail($id)->update([
             'jenis_cuti'   => $request->jenis_cuti,
+            'bobot_cuti'   => $request->bobot_cuti,
         ]);
 
         toastr()->warning('Data berhasil diubah.', 'Berhasil');

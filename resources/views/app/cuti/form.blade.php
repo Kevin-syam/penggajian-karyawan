@@ -30,11 +30,18 @@
 
         <div class="card rounded-4 border-0 shadow-sm">
             <div class="card-body row">
-                <div class="col-12 mb-3">
+                <div class="col-6 mb-3">
                     <label class="mb-1">Jenis cuti</label>
                     <div class="col-sm-12">
                         <input type="text" class="form-control" name="jenis_cuti" placeholder="Ketikkan jenis cuti"
                             value="{{ $isEdit ? $cuti->jenis_cuti : '' }}" required>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="mb-1">Bobot cuti</label>
+                    <div class="col-sm-12">
+                        <input type="number" min="1" max="4" class="form-control" name="bobot_cuti" placeholder="Masukan Bobot cuti"
+                            value="{{ $isEdit ? $cuti->bobot_cuti : '' }}" required>
                     </div>
                 </div>
 

@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SawCalculator;
 use App\Models\Cuti;
 use App\Models\DetailCuti;
 use Illuminate\Http\Request;
 
 class PengajuanCutiController extends Controller
 {
+    protected $sawCalculator;
+
+    public function __construct(SawCalculator $sawCalculator)
+    {
+        $this->sawCalculator = $sawCalculator;
+    }
     public function index(Request $request, DetailCuti $pengajuan_cutis)
     {
         $keyword = $request->input('keyword');
+
+        $atribut = ['benefit','cost','benefit'];
+        $bobot = [40,20,10];
 
         if ($request->has('keyword')) {
             $pengajuan_cutis = $pengajuan_cutis->whereHas('user', function ($query) use ($keyword) {
@@ -19,12 +29,32 @@ class PengajuanCutiController extends Controller
         }
 
         if (auth()->user()->level == 'pegawai') {
-            $pengajuan_cutis = $pengajuan_cutis->where('user_id', auth()->id());
+            $pengajuan_cutis = $pengajuan_cutis->where('user_id', auth()->id())->paginate(10);
+        }elseif (auth()->user()->level == 'admin'){
+            $pengajuan_cutis = $pengajuan_cutis->latest()->paginate(10);
+
+            foreach($pengajuan_cutis as $pengajuan_cuti){
+                // $pengajuan_cuti->jenisCuti = $pengajuan_cuti->cuti->jenis_cuti;
+
+                $criteria = [
+                    $pengajuan_cuti->cuti->bobot_cuti,
+                    $pengajuan_cuti->durasi,
+                    $pengajuan_cuti->sisa_cuti,
+                ];
+    
+                $pengajuan_cuti->data_kriteria = $criteria;
+                $allDataKriteria[] = $criteria;
+            }
+
+            $pengajuan_cutis->each(function ($cutia) use ($allDataKriteria,$atribut, $bobot) {
+                $cutia->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+                $cutia->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
+            });
         }
 
         return view('app.detail_cuti.index', [
             'request' => $request->all(),
-            'pengajuan_cutis'  => $pengajuan_cutis->latest()->paginate(10),
+            'pengajuan_cutis'  => $pengajuan_cutis,
         ]);
     }
 
@@ -45,6 +75,8 @@ class PengajuanCutiController extends Controller
             'waktu_pengajuan' => $request->waktu_pengajuan,
             'keterangan'      => $request->keterangan,
             'status'          => 'Pengajuan',
+            'durasi'          => $request->durasi,
+            'sisa_cuti'       => $request->sisa_cuti,
         ]);
 
         toastr()->success('Data berhasil ditambahkan.', 'Sukses');
@@ -74,6 +106,8 @@ class PengajuanCutiController extends Controller
             'waktu_pengajuan' => $request->waktu_pengajuan,
             'keterangan'      => $request->keterangan,
             'status'          => $request->status,
+            'durasi'          => $request->durasi,
+            'sisa_cuti'       => $request->sisa_cuti,
         ]);
 
         toastr()->warning('Data berhasil diubah.', 'Berhasil');

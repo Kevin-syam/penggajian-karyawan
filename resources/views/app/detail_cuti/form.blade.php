@@ -55,6 +55,22 @@
                 </div>
 
                 <div class="col-6 mb-3">
+                    <label class="mb-1">Durasi</label>
+                    <div class="col-sm-12">
+                        <input type="number" min="1" max="3" class="form-control" name="durasi" placeholder="Durasi Maksimal 3 Hari"
+                            value="{{ $isEdit ? $pengajuan_cuti->durasi : '' }}" required>
+                    </div>
+                </div>
+
+                <div class="col-6 mb-3">
+                    <label class="mb-1">Sisa Cuti</label>
+                    <div class="col-sm-12">
+                        <input type="number" min="0" max="12" class="form-control" name="sisa_cuti" placeholder="Inputkan Manual Sisa Cuti Anda"
+                            value="{{ $isEdit ? $pengajuan_cuti->sisa_cuti : '' }}" required>
+                    </div>
+                </div>
+
+                <div class="col-6 mb-3">
                     <label class="mb-1">Keterangan</label>
                     <div class="col-sm-12">
                         <input type="text" class="form-control" name="keterangan" placeholder="Ketikkan keterangan cuti"

@@ -35,7 +35,8 @@
                     <thead>
                         <tr class="bg-secondary">
                             <th class="text-center" width="5%"><i class="bi bi-hash"></i></th>
-                            <th class="text-start" width="90%">Jenis Cuti</th>
+                            <th class="text-start" width="60%">Jenis Cuti</th>
+                            <th class="text-start" width="30%">Bobot Cuti</th>
                             <th class="text-center" width="5%"><i class="bi bi-lightning-charge"></i></th>
                         </tr>
                     </thead>
@@ -47,6 +48,9 @@
                                 </td>
                                 <td class="text-start">
                                     {{ $cuti->jenis_cuti }}
+                                </td>
+                                <td class="text-start">
+                                    {{ $cuti->bobot_cuti }}
                                 </td>
                                 <td class="text-center">
                                     <a href="{{ route('jenis-cuti.edit', ['jenis_cuti' => $cuti->id]) }}"
