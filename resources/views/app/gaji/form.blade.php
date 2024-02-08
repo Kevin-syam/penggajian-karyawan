@@ -75,12 +75,12 @@
                 </div>
 
                 <div class="col-4 mb-3">
-                    <label class="mb-1">Bonus</label>
+                    <label class="mb-1">Bonus (Diinput saat edit data)</label>
                     <div class="col-sm-12">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
                             <input type="number" class="form-control" name="bonus" placeholder="0"
-                                value="{{ $isEdit ? $gaji->bonus : '' }}" disabled>
+                                value="{{ $isEdit ? $gaji->bonus : '' }}" {{ $isEdit ? '' : 'disabled' }}>
                         </div>
                     </div>
                 </div>

@@ -41,6 +41,7 @@
                         <tr class="bg-secondary">
                         @if (auth()->user()->level == 'admin')
                             <th class="text-start" width="15%">NIP</th>
+                            <th class="text-start" width="15%">Nama</th>
                             <th class="text-start" width="12%">Durasi</th>
                             <th class="text-start" width="15%">Jenis Cuti</th>
                             <th class="text-start" width="15%">Waktu Pengajuan</th>
@@ -60,10 +61,13 @@
                     <tbody>
                         <!-- Untuk admin dibikin sesi admin yang bisa liat ranking atau tingkat urgensi dan total bobotnya -->
                         @if (auth()->user()->level == 'admin')
-                        @forelse ($pengajuan_cutis as $pengajuan_cuti)
+                        @forelse ($pengajuan_cutis->sortBy(function ($item) use ($pengajuan_cutis) {
+                            return $item->sawRanking[count($pengajuan_cutis) - $item->id];
+                        }) as $pengajuan_cuti)
                                 <tr>
                                     @if (auth()->user()->level == 'admin')
                                         <td class="text-start">{{ $pengajuan_cuti->user->pegawai->nip }}</td>
+                                        <td class="text-start">{{ $pengajuan_cuti->user->name }}</td>
                                     @endif
                                     <td class="text-start">{{ $pengajuan_cuti->durasi }} hari</td>
                                     <td class="text-start">{{ $pengajuan_cuti->cuti->jenis_cuti }}</td>
@@ -89,7 +93,7 @@
                             @forelse ($pengajuan_cutis as $pengajuan_cuti)
                                 <tr>
                                     <td class="text-start">{{ $pengajuan_cuti->cuti->jenis_cuti }}</td>
-                                    <td class="text-start">{{ $pengajuan_cuti->durasi }}</td>
+                                    <td class="text-start">{{ $pengajuan_cuti->durasi }} hari</td>
                                     <td class="text-start">{{ $pengajuan_cuti->waktu_pengajuan }}</td>
                                     <td class="text-start">{{ $pengajuan_cuti->status }}</td>
                                     <td class="text-center">

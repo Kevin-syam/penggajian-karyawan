@@ -44,7 +44,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($gajis as $gaji)
+                    @forelse ($gajis->sortBy(function ($item) use ($gajis) {
+                            return $item->sawRanking[count($gajis) - $item->id];
+                        }) as $gaji)
                             <tr>
                                 <td class="text-start">{{ $gaji->user->pegawai->nip }}</td>
                                 <td class="text-start">{{ $gaji->user->name }}</td>
