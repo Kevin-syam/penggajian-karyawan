@@ -2,15 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SawCalculator;
 use App\Models\Gaji;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class GajiController extends Controller
 {
+    protected $sawCalculator;
+
+    public function __construct(SawCalculator $sawCalculator)
+    {
+        $this->sawCalculator = $sawCalculator;
+    }
+
     public function index(Request $request, Gaji $gajis)
     {
+        
+        
         $keyword = $request->input('keyword');
+        // $data_kriteria =[];
+        $atribut = ['cost','benefit','benefit','cost','benefit'];
+        $bobot = [30,40,20,10,50];
 
         if ($request->has('keyword')) {
             $gajis = $gajis->whereHas('user', function ($query) use ($keyword) {
@@ -18,11 +31,43 @@ class GajiController extends Controller
             });
         }
 
+        $gajis = $gajis->with('user')->latest()->paginate(10);
+
+        foreach ($gajis as $gaji) {
+            $criteria = [
+                $gaji->jumlah_absen,
+                $gaji->attitude,
+                $gaji->kedisiplinan,
+                $gaji->efisiensi_kerja,
+                $gaji->kinerja,
+            ];
+
+            $gaji->data_kriteria = $criteria;
+            $allDataKriteria[] = $criteria;
+            // $gaji->data_kriteria = array_push($data_kriteria,$criteria);
+
+            // $sawInstance = new SawCalculator($data_kriteria,$atribut,$bobot)
+        }
+
+        $gaji->allDataKriteria = $allDataKriteria;
+        // $gaji->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+        // Set allDataKriteria property for each $gaji
+        // $gajis->each(function ($gaji, $key) use ($allDataKriteria) {
+        //     $gaji->allDataKriteria = $allDataKriteria[$key];
+        // });
+
+        // // Set sawResult property for each $gaji
+        $gajis->each(function ($gaji) use ($allDataKriteria,$atribut, $bobot) {
+            $gaji->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+            $gaji->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
+        });
+
         return view('app.gaji.index', [
             'request'  => $request->all(),
-            'gajis' => $gajis->with('user')->latest()->paginate(10),
+            'gajis' => $gajis,
         ]);
     }
+    
 
     public function create()
     {
@@ -41,6 +86,10 @@ class GajiController extends Controller
             'jumlah_absen' => $request->jumlah_absen,
             'transport'    => $request->transport,
             'bonus'        => $request->bonus,
+            'attitude'     => $request->attitude,
+            'kedisiplinan'  => $request->kedisiplinan,
+            'efisiensi_kerja'   => $request->efisiensi_kerja,
+            'kinerja'      => $request->kinerja,
         ]);
 
         toastr()->success('Data berhasil ditambahkan.', 'Sukses');
@@ -71,6 +120,10 @@ class GajiController extends Controller
             'jumlah_absen' => $request->jumlah_absen,
             'transport'    => $request->transport,
             'bonus'        => $request->bonus,
+            'attitude'     => $request->attitude,
+            'kedisiplinan'  => $request->kedisiplinan,
+            'efisiensi_kerja'   => $request->efisiensi_kerja,
+            'kinerja'      => $request->kinerja,
         ]);
 
         toastr()->warning('Data berhasil diubah.', 'Berhasil');
@@ -86,4 +139,6 @@ class GajiController extends Controller
 
         return redirect()->route('gaji.index');
     }
+
+    
 }

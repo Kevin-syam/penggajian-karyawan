@@ -37,8 +37,9 @@
                             <th class="text-start" width="5%">NIP</th>
                             <th class="text-start" width="30%">Nama</th>
                             <th class="text-start" width="20%">Departemen</th>
-                            <th class="text-start" width="25%">Jabatan</th>
-                            <th class="text-start" width="15%">Periode</th>
+                            <th class="text-start" width="15%">Posisi</th>
+                            <th class="text-start" width="15%">Penilaian</th>
+                            <th class="text-start" width="10%">Ranking</th>
                             <th class="text-center" width="5%"><i class="bi bi-lightning-charge"></i></th>
                         </tr>
                     </thead>
@@ -49,7 +50,8 @@
                                 <td class="text-start">{{ $gaji->user->name }}</td>
                                 <td class="text-start">{{ $gaji->user->pegawai->departemen->nama }}</td>
                                 <td class="text-start">{{ $gaji->user->pegawai->jabatan }}</td>
-                                <td class="text-start">{{ $gaji->periode }}</td>
+                                <td class="text-start">{{ $gaji->sawResult[count($gajis) - $gaji->id] * 100}}</td>
+                                <td class="text-start">{{ $gaji->sawRanking[count($gajis) - $gaji->id] }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('gaji.edit', ['gaji' => $gaji->id]) }}"
                                         class="btn btn-sm btn-success rounded-circle">
@@ -72,5 +74,7 @@
                 {{ $gajis->appends($request)->links() }}
             </div>
         </div>
+        <!-- <pre>{{ print_r($gaji->allDataKriteria,true) }} </pre>
+        <pre>{{ print_r($gaji->sawResult,true) }} </pre> -->
     </div>
 @endsection

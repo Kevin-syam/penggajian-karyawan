@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\SawCalculator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 

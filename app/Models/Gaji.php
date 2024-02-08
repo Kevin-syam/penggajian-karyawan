@@ -14,10 +14,17 @@ class Gaji extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = [
+    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    // public function getAttitudeLevelAttribute()
+    // {
+    //     $levels = ['Very Low', 'Low', 'Medium', 'High', 'Very High'];
+    //     return $levels[$this->attributes['attitude'] - 1] ?? null;
+    // }
 }

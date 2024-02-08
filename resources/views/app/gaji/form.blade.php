@@ -80,8 +80,64 @@
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">Rp</span>
                             <input type="number" class="form-control" name="bonus" placeholder="0"
-                                value="{{ $isEdit ? $gaji->bonus : '' }}" required>
+                                value="{{ $isEdit ? $gaji->bonus : '' }}" disabled>
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="mb-1">Attitude</label>
+                    <div class="col-sm-12">
+                        <input type="number" min="1" max="4" class="form-control" name="attitude" placeholder="Penilaian Sikap"
+                            value="{{ $isEdit ? $gaji->attitude : '' }}" required>
+                        
+
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="mb-1">Kedisiplinan</label>
+                    <div class="col-sm-12">
+                    <input type="number" min="1" max="4" class="form-control" name="kedisiplinan" placeholder="Penilaian Kedisiplinan"
+                            value="{{ $isEdit ? $gaji->kedisiplinan : '' }}" required>
+                    <!-- <select class="form-select" name="kedisiplinan" required>
+                            
+                            @if (!$isEdit)
+                                <option selected disabled>- Penilaian Kedisiplinan -</option>
+                            @endif
+                            <option value="1">Tidak Disiplin</option>
+                            <option value="2">Kurang Disiplin</option>
+                            <option value="3">Disiplin</option>
+                            <option value="4">Sangat Disiplin</option>
+                            
+                        </select> -->
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="mb-1">Efisiensi Kerja</label>
+                    <div class="col-sm-12">
+                    <input type="number" min="1" max="4" class="form-control" name="efisiensi_kerja" placeholder="Penilaian Efisiensi"
+                            value="{{ $isEdit ? $gaji->efisiensi_kerja : '' }}" required>
+                    <!-- <select class="form-select" name="efisiensi_kerja" required>
+                            
+                            @if (!$isEdit)
+                                <option selected disabled>- Penilaian Efisiensi -</option>
+                            @endif
+                            <option value="1">Tidak Ada Kerusakan</option>
+                            <option value="2">Sedikit Kerusakan</option>
+                            <option value="3">Sejumlah Kerusakan</option>
+                            <option value="4">Banyak Kerusakn</option>
+                            
+                        </select> -->
+                    </div>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="mb-1">Kinerja</label>
+                    <div class="col-sm-12">
+                        <input type="number" min="1" max="10" class="form-control" name="kinerja" placeholder="Nilai Kinerja"
+                            value="{{ $isEdit ? $gaji->kinerja : '' }}" required>
                     </div>
                 </div>
 
