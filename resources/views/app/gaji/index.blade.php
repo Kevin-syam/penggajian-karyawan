@@ -76,7 +76,5 @@
                 {{ $gajis->appends($request)->links() }}
             </div>
         </div>
-        <!-- <pre>{{ print_r($gaji->allDataKriteria,true) }} </pre>
-        <pre>{{ print_r($gaji->sawResult,true) }} </pre> -->
     </div>
 @endsection

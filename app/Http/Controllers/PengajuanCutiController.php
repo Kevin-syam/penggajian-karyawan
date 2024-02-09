@@ -46,10 +46,22 @@ class PengajuanCutiController extends Controller
                 $allDataKriteria[] = $criteria;
             }
 
-            $pengajuan_cutis->each(function ($cutia) use ($allDataKriteria,$atribut, $bobot) {
-                $cutia->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
-                $cutia->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
-            });
+            // $pengajuan_cutis->each(function ($cutia) use ($allDataKriteria,$atribut, $bobot) {
+            //     $cutia->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+            //     $cutia->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
+            // });
+            if ($pengajuan_cutis->isNotEmpty()) {
+                // Set allDataKriteria property for each $gaji
+                $pengajuan_cutis->each(function ($pengajuan_cuti, $key) use ($allDataKriteria) {
+                    $pengajuan_cuti->allDataKriteria = $allDataKriteria[$key] ?? null;
+                });
+    
+                // Set sawResult and sawRanking properties for each $gaji
+                $pengajuan_cutis->each(function ($pengajuan_cuti) use ($allDataKriteria, $atribut, $bobot) {
+                    $pengajuan_cuti->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+                    $pengajuan_cuti->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
+                });
+            }
         }
 
         return view('app.detail_cuti.index', [

@@ -23,7 +23,7 @@ return new class extends Migration
     {
         Schema::table('gajis', function (Blueprint $table) {
             
-            $table->unsignedInteger('bonus')->change();
+            // $table->unsignedInteger('bonus')->change();
         });
     }
 };

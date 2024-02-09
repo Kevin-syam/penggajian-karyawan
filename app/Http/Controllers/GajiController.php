@@ -33,6 +33,7 @@ class GajiController extends Controller
 
         $gajis = $gajis->with('user')->latest()->paginate(10);
 
+        $allDataKriteria = [];
         foreach ($gajis as $gaji) {
             $criteria = [
                 $gaji->jumlah_absen,
@@ -49,18 +50,20 @@ class GajiController extends Controller
             // $sawInstance = new SawCalculator($data_kriteria,$atribut,$bobot)
         }
 
-        $gaji->allDataKriteria = $allDataKriteria;
-        // $gaji->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
-        // Set allDataKriteria property for each $gaji
-        // $gajis->each(function ($gaji, $key) use ($allDataKriteria) {
-        //     $gaji->allDataKriteria = $allDataKriteria[$key];
-        // });
+        
+         // Check if $gajis is not empty before processing
+        if ($gajis->isNotEmpty()) {
+            // Set allDataKriteria property for each $gaji
+            $gajis->each(function ($gaji, $key) use ($allDataKriteria) {
+                $gaji->allDataKriteria = $allDataKriteria[$key] ?? null;
+            });
 
-        // // Set sawResult property for each $gaji
-        $gajis->each(function ($gaji) use ($allDataKriteria,$atribut, $bobot) {
-            $gaji->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
-            $gaji->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
-        });
+            // Set sawResult and sawRanking properties for each $gaji
+            $gajis->each(function ($gaji) use ($allDataKriteria, $atribut, $bobot) {
+                $gaji->sawResult = $this->sawCalculator->get_calculate($allDataKriteria, $atribut, $bobot);
+                $gaji->sawRanking = $this->sawCalculator->get_rank($allDataKriteria, $atribut, $bobot);
+            });
+        }
 
         return view('app.gaji.index', [
             'request'  => $request->all(),
